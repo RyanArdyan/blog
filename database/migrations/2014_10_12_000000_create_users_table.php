@@ -15,6 +15,9 @@ return new class extends Migration
     {
         Schema::create('users', function (Blueprint $table) {
             $table->id();
+				// fitur admin
+				// 1 berarti admin, 0 berarti user
+				$table->tinyInteger('level');
             $table->string('nama');
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();

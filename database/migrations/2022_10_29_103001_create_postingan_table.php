@@ -16,12 +16,12 @@ return new class extends Migration
         Schema::create('postingan', function (Blueprint $table) {
 				// jangan lupa mengubah id menjadi postingan_id
             $table->id();
-				$table->unsignedBigInteger('id_user');
-				$table->unsignedBigInteger('id_kategori');
-
-				// mengatur relasi
-				$table->foreign('id_user')->references('users')->on('id');
-				$table->foreign('id_kategori')->references('kategori')->on('id');
+				$table->foreignId('user_id')->constrained('users')->cascadeOnDelete()->cascadeOnUpdate();
+				$table->foreignId('kategori_id')->constrained('kategori')->cascadeOnDelete()->cascadeOnUpdate();
+				$table->string('gambar');
+				$table->string('judul')->unique();
+				$table->string('slug')->unique();
+				$table->text('isi');
             $table->timestamps();
         });
     }
