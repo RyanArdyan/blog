@@ -106,6 +106,6 @@ class AuthController extends Controller
 		session()->invalidate();
 		// buat ulang token
 		session()->regenerateToken();
-		return redirect()->route('beranda');
+		return redirect()->route('beranda.index');
 	}
 }

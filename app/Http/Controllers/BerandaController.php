@@ -10,7 +10,13 @@ class BerandaController extends Controller
 {
 	public function index()
 	{
-		$semua_postingan = Postingan::select('id', 'judul', 'isi', 'updated_at')->orderBy('updated_at', 'desc')->get();
+		$semua_postingan = Postingan::select('gambar', 'judul', 'slug', 'updated_at')->orderBy('updated_at', 'desc')->get();
 		return view('beranda.index', ['semua_postingan' => $semua_postingan]);
+	}
+
+	public function detail($slug)
+	{
+		$detail_postingan = Postingan::where('slug', $slug)->first();
+		return view('beranda.detail', ['detail_postingan' => $detail_postingan]);
 	}
 }

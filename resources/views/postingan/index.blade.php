@@ -79,7 +79,7 @@
 		serverSide: true,
 		ajax: '{{ route("postingan.data") }}',
 		columns: [
-			{data: 'checkbox', searchable: false},
+			{data: 'checkbox', searchable: false, sortable: false},
 			{data: 'DT_RowIndex'},
 			{data: 'gambar'},
 			{data: 'judul'},
@@ -98,14 +98,13 @@
 		// name checkbox yang dicentang
 		$('input:checkbox[name=checkbox]:checked').each(function() {
 			// dorong nilai punya checkbox yang dicentang
-			semua_id.push($(this).val());    
+			semua_id.push(parseInt($(this).val()));    
 		});
 		// jika semua_id.length === 0 maka tampilkan sweetalert
 		// jika user belum memilih satu pun baris data
 		if (semua_id.length === 0) {
 			Swal.fire('Silahkan pilih data.');
 		} else {
-			console.log(semua_id);
 			Swal.fire({
 				title: 'Apakah kamu yakin?',
 				text: "Kamu akan menghapus baris data yang terpilih!",
@@ -151,11 +150,6 @@
 		}
 	});
 
-	// // cegah event enter pada input judul di tambah
-	// $('#nama_kategori').on('keypress', function(event) {
-	// 	return event.which !== 13
-	// });
-
 	// jika modal tambah ditutup maka hapus .is-invalid dan text pada .invalid-feedback
 	$("#tutup_modal").on("click", function() {
 		$("#form_tambah")[0].reset();
@@ -166,12 +160,6 @@
 		$(".pesan_error").text("");
 	});
 
-	// // jika modal perbarui ditutip maka hapus .is-invalid dan text pada .invalid-feedback
-	// $("#p_tutup_modal").on("click", function() {
-	// 	$(".p_input").removeClass("is-invalid");
-	// 	// ketika .is-invalid dihapus maka text error tidak  akan tampil
-	// 	$(".p_pesan_error").text("");
-	// });
 
 	// jika #tombol_tambah di click maka jalankan fungsi berikut
 	$("#tombol_tambah").on("click", function() {
@@ -255,64 +243,6 @@
 		ajax_untuk_tambah(simpan, this);
 	});
 
-	// // simpan dan tambah lagi
-	// let simpan_dan_tambah_lagi = function() {
-	// 	// hapus value input
-	// 	$("#form_tambah")[0].reset();
-	// 	// fokuskan #nama_kategori
-	// 	$("#nama_kategori").focus();
-	// 	// notifikasi toast bootstrap
-	// 	$("#toast_body").text(`Berhasil menyimpan kategori.`);
-	// 	toast.show();
-	// 	// panggil fungsi datatable agar bisa reload table
-	// 	datatable();
-	// };
-
-	// // logika tombol simpan dan tambah lagi
-	// $("#simpan_dan_tambah_lagi").on("click", function() {
-	// 	// event.preventDefault();
-	// 	ajax_untuk_tambah(simpan_dan_tambah_lagi);
-	// });
-
-	// // COPAS
-	// // Edit
-	// $(document).on("click", "#tombolEdit", function(e) {
-   //      e.preventDefault();
-   //      // ambil nilai attr data-id
-   //      let id_produk = $(this).attr("data-id")
-   //      $.ajax({
-   //          // ke method show
-   //          url: "/produk/" + id_produk,
-   //          type: "GET",
-   //          data: {
-   //              id_produk: id_produk
-   //          }
-   //      })
-   //          .done(function(resp) {
-   //              // tambahkan element option
-   //              // lakukan pengulangan sebanyak jumlah kategori
-   //              $.each(resp.semuaKategori, function(key, value) {
-   //                  if (value.id_kategori === resp.detailProduk.id_kategori) {
-   //                      $("#edit_id_kategori").append(`<option value="${value.id_kategori}" selected>${value.nama_kategori}</option>`);
-   //                  } else {
-   //                      $("#edit_id_kategori").append(`<option value="${value.id_kategori}">${value.nama_kategori}</option>`);
-   //                  };
-   //              });
-
-   //              $("#edit_id_produk").val(resp.detailProduk.id_produk);
-   //              $("#edit_nama_produk").val(resp.detailProduk.nama_produk);
-   //              $("#edit_merk").val(resp.detailProduk.merk);
-   //              $("#edit_harga_beli").val(resp.detailProduk.harga_beli);
-   //              $("#edit_diskon").val(resp.detailProduk.diskon);
-   //              $("#edit_harga_jual").val(resp.detailProduk.harga_jual);
-   //              $("#edit_stok").val(resp.detailProduk.stok);
-   //              // tampilkan modal
-   //              $("#modalEdit").modal("show");
-   //          });
-
-   //  });
-	// //  AKHIR COPAS
-
 	// show
 	$(document).on("click", ".tombol_edit", function() {
 		// ambil value dari attribute data-id
@@ -348,34 +278,6 @@
 			// tampilkan modal
 			$('#modal_edit').modal('show');
 	});
-
-	// // update
-	// // jangan menyimpan kode dibawah ini ke dalam block .done milik ajax karena akan terjadi pengulangan sebanyak 3x
-	// $("#perbarui").on("click", function() {
-	// 	$.ajax({
-	// 		url: '{{ route("kategori.update") }}',
-	// 		method: 'PUT',
-	// 		data: {
-	// 			'id': $('#p_id').val(),
-	// 			'nama_kategori': $('#p_nama_kategori').val(),
-	// 			'keterangan': $('#p_keterangan').val()
-	// 		}
-	// 	})
-	// 		.done(function(response) {
-	// 			if (response.status === 0) {
-	// 				$.each(response.errors, function(key, value) {
-	// 					$(`#p_${key}`).addClass('is-invalid');
-	// 					$(`.p_error_${key}`).text(value);
-	// 				});
-	// 			} else if (response.status === 200) {
-	// 				$('#form_perbarui')[0].reset();
-	// 				$('#modal_perbarui').modal('hide');
-	// 				$("#toast_body").text('Berhasil memperbarui kategori');
-	// 				toast.show();
-	// 				datatable();
-	// 			};
-	// 		});
-	// });
 
 	// Update
 	$("#form_edit").on("submit", function(e) {
@@ -416,7 +318,5 @@
 			// muat ulang ajax pada table
 			table.ajax.reload();
 	});
-	
-	
 </script>
 @endpush

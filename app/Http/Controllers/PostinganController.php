@@ -173,7 +173,6 @@ class PostinganController extends Controller
 		$ids = $request->ids;
 		// hapus gambar dulu	
 		$postingan_terpilih = Postingan::whereIn('id', $ids)->get();
-		$gambar = [];
 		foreach($postingan_terpilih as $postingan) {
 			// Ulangi perintah hapus
 			Storage::delete('public/gambar_postingan/' . $postingan->gambar);

@@ -7,21 +7,22 @@ use App\Http\Controllers\ForgotPasswordController;
 use App\Http\Controllers\BerandaController;
 use App\Http\Controllers\KategoriController;
 use App\Http\Controllers\PostinganController;
+use App\Http\Controllers\PengaturanController;
 
 // route harus menggunakan name agar jika url nya diubah maka kode nya tidak akan error karena aku menggunakan name
 
-// halaman beranda atau url awal
+// awal beranda
 Route::get('/', function() {
-	return redirect()->route('beranda');
+	return redirect()->route('beranda.index');
 });
-Route::get('/beranda', [BerandaController::class, 'index'])->name('beranda');
+Route::get('/beranda', [BerandaController::class, 'index'])->name('beranda.index');
+Route::get('/beranda/{slug}', [BerandaController::class, 'detail'])->name('beranda.detail');
+// akhir beranda
 
 // jika user sudah login maka cegah user mengakses route login dan registrasi kecuali user logout manual
 Route::middleware(['auth'])->group(function() {
 	// logout
 	Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
-
-	;
 });
 
 // rute-rute berikut, hanya bisa diakses oleh admin yang sudah login
@@ -45,6 +46,12 @@ Route::middleware(['auth', 'admin'])->group(function() {
 	Route::get('/postingan/show', [PostinganController::class, 'show'])->name('postingan.show');
 	Route::post('/postingan/update', [PostinganController::class, 'update'])->name('postingan.update');
 	Route::delete('/postingan/destroy', [PostinganController::class, 'destroy'])->name('postingan.destroy');
+
+	// jadikan admin
+	Route::get('/pengaturan', [PengaturanController::class, 'index'])->name('pengaturan.index');
+	Route::get('/pengaturan/data', [PengaturanController::class, 'data'])->name('pengaturan.data');
+	Route::post('/pengaturan/jadikan-admin', [PengaturanController::class, 'jadikan_admin'])->name('pengaturan.jadikan_admin');
+	Route::post('/pengaturan/jadikan-user', [PengaturanController::class, 'jadikan_user'])->name('pengaturan.jadikan_user');
 });
 
 // jika user belum login maka cegah ke halaman dashboard 
