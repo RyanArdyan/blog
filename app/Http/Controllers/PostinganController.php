@@ -60,7 +60,7 @@ class PostinganController extends Controller
 	public function store(Request $request)
 	{
 		$validator = Validator::make($request->all(), [
-			'judul' => ['required', 'unique:postingan', 'min:3', 'max:100'],
+			'judul' => ['required', 'unique:postingan', 'min:3', 'max:150'],
 			'isi' => ['required'],
 			'gambar' => ['required', 'image', 'max:512']
 		]);
@@ -80,7 +80,7 @@ class PostinganController extends Controller
 		Storage::putFileAs('public/gambar_postingan/', $request->file('gambar'), $nama_gambar_baru);
 
 		// simpan postingan
-		$postingan = Postingan::create([
+		Postingan::create([
 			'user_id' => Auth::id(),
 			'kategori_id' => $request->kategori_id,
 			'gambar' => $nama_gambar_baru,
@@ -113,9 +113,9 @@ class PostinganController extends Controller
 
 		// jika nilai input judul sama dengan nilai column judul
 		if ($request->judul === $detail_postingan->judul) {
-			 $validasi_judul = 'string|min:3|max:100';
+			 $validasi_judul = 'string|min:3|max:150';
 		} else if($request->judul !== $detail_postingan->judul) {
-			 $validasi_judul = 'string|min:3|max:100|unique:postingan';
+			 $validasi_judul = 'string|min:3|max:150|unique:postingan';
 		};
 
 		// validasi

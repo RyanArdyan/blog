@@ -143,13 +143,6 @@
 		$('input:checkbox').not(this).prop('checked', this.checked);
 	});
 
-	// csrf token laravel
-	$.ajaxSetup({
-		headers: {
-			'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-		}
-	});
-
 	// jika modal tambah ditutup maka hapus .is-invalid dan text pada .invalid-feedback
 	$("#tutup_modal").on("click", function() {
 		$("#form_tambah")[0].reset();
@@ -160,9 +153,16 @@
 		$(".pesan_error").text("");
 	});
 
+	// csrf token laravel
+	$.ajaxSetup({
+		headers: {
+			'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+		}
+	});
 
 	// jika #tombol_tambah di click maka jalankan fungsi berikut
 	$("#tombol_tambah").on("click", function() {
+		// hapus semua option sebelum modal tambah ditampilkan
 		$("#kategori_id > option").remove();
 		$("#pratinjau_gambar").attr("src", "#");
 		$.ajax({
@@ -186,15 +186,23 @@
 	});
 
 	// function ajax_untuk_tambah
-	function ajax_untuk_tambah(simpan, form) {
+	function ajax_untuk_tambah(fungsi) {
+		let form_data = new FormData();
+		let gambar = $('#gambar')[0].files[0];
+		
+		// Check file selected or not
+		form_data.append('judul', $('#judul').val());
+		form_data.append('isi', $('#isi').val());
+		form_data.append('kategori_id', $('#kategori_id').val());
+		form_data.append('gambar',gambar);
+
 		$.ajax({
 			url: "{{ route('postingan.store') }}",
 			type: "POST",
 			// karena aku tidak mengirim new FormData(this) maka aku tidak boleh menggunakan processData, cache, contentType
-			data: new FormData(form),
+			data: form_data,
 			processData: false,
 			contentType: false,
-			cache: false,
 			beforeSend: function() {
 				$(".input").removeClass('is-invalid');
 				$(".pesan_error").text("");
@@ -208,7 +216,7 @@
 					$(`.error_${key}`).text(value);
 				});
 			} else if (response.status === 200) {
-				simpan();
+				fungsi();
 			};
 		});
 	};
@@ -223,25 +231,36 @@
 		table.ajax.reload();
 	};
 
-	// preview gambar
-	$("#gambar").on("change", function() {
-        let foto = this.files[0];
-        if (foto) {
-            let filePembaca = new FileReader();
-            filePembaca.onload = function(event) {
-                $("#pratinjau_gambar").attr("src", event.target.result);
-            };
-            filePembaca.readAsDataURL(foto);
-        };
-   });
-
 	// logika tombol simpan
-	$("#form_tambah").on("submit", function(event) {
-		event.preventDefault();
+	$("#simpan").on("click", function() {
 		// kirim variabel simpan yang berisi fungsi
 		// template ajax
-		ajax_untuk_tambah(simpan, this);
+		ajax_untuk_tambah(simpan);
 	});
+
+	// copas
+	// simpan dan tambah lagi
+	let simpan_dan_tambah_lagi = function() {
+		// hapus value input
+		$("#form_tambah")[0].reset();
+		// reset gambar 
+		$('#pratinjau_gambar').attr('src', '#');
+		// fokuskan #nama_kategori
+		$("#judul").focus();
+		// notifikasi toast bootstrap
+		$("#toast_body").text(`Berhasil menyimpan postingan.`);
+		toast.show();
+		// panggil fungsi datatable agar bisa reload table
+		datatable();
+	};
+
+	// logika tombol simpan dan tambah lagi
+	$("#simpan_dan_tambah_lagi").on("click", function() {
+		// event.preventDefault();
+		ajax_untuk_tambah(simpan_dan_tambah_lagi);
+	});
+	// akhir copas
+
 
 	// show
 	$(document).on("click", ".tombol_edit", function() {
@@ -317,6 +336,18 @@
 			toast.show();
 			// muat ulang ajax pada table
 			table.ajax.reload();
+	});
+
+	// pratinjau gambar
+	$("#gambar").on("change", function() {
+		let foto = this.files[0];
+		if (foto) {
+			let filePembaca = new FileReader();
+			filePembaca.onload = function(e) {
+					$("#pratinjau_gambar").attr("src", e.target.result);
+			};
+			filePembaca.readAsDataURL(foto);
+		};
 	});
 </script>
 @endpush

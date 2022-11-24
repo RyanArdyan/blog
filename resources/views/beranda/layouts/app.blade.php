@@ -11,6 +11,9 @@
 
    <!-- Custom styles for this template -->
    <link href="{{ asset('bootstrap5_examples/navbar-static/navbar-top.css') }}" rel="stylesheet">
+
+	{{-- beranda_index css --}}
+	@stack('beranda_index')
 </head>
 
 <body>

@@ -121,11 +121,6 @@
 		}
 	});
 
-	// cegah event enter pada input nama kategori di tambah
-	$('#nama_kategori').on('keypress', function(event) {
-		return event.which !== 13
-	});
-
 	// jika modal tambah ditutup maka hapus .is-invalid dan text pada .invalid-feedback
 	$("#tutup_modal").on("click", function() {
 		$("#form_tambah")[0].reset();
@@ -134,16 +129,21 @@
 		$(".pesan_error").text("");
 	});
 
-	// jika modal perbarui ditutip maka hapus .is-invalid dan text pada .invalid-feedback
+	// jika modal perbarui ditutup maka hapus .is-invalid dan text pada .invalid-feedback
 	$("#p_tutup_modal").on("click", function() {
 		$(".p_input").removeClass("is-invalid");
 		// ketika .is-invalid dihapus maka text error tidak  akan tampil
 		$(".p_pesan_error").text("");
 	});
 
+	// cegah event enter pada input nama kategori di tambah
+	$('#nama_kategori').on('keypress', function(event) {
+		return event.which !== 13
+	});
+
 	function ajax_untuk_tambah(fungsi) {
 		$.ajax({
-			url: '{{ route('kategori.store') }}',
+			url: "{{ route('kategori.store') }}",
 			type: "POST",
 			// karena aku tidak mengirim new FormData(this) maka aku tidak boleh menggunakan processData, cache, contentType
 			data: {
@@ -170,8 +170,8 @@
 
 	// simpan
 	let simpan = function() {
-		$("#modal_tambah").modal('hide');
 		$('#form_tambah')[0].reset();
+		$("#modal_tambah").modal('hide');
 		// tampilkan notifikasi menggunakan bootstrap
 		$("#toast_body").text(`Berhasil menyimpan kategori.`);
 		toast.show();
