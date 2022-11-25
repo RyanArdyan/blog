@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Validator;
 use App\Models\Kategori;
+use Illuminate\Support\Str;
 use PDO;
 
 class KategoriController extends Controller
@@ -80,11 +81,15 @@ class KategoriController extends Controller
 		// jika validasi berhasil
 		} else {
 			// simpan kategori
-			$detail_kategori = Kategori::create($request->all());
+			$detail_kategori = Kategori::create([
+				'nama_kategori' => $request->nama_kategori,
+				'slug' => Str::slug($request->nama_kategori, '-'),
+				'isi' => $request->isi,
+				'keterangan' => $request->keterangan
+			]);
 			return response()->json([
 				'status' => 200,
-				'message' => 'Berhasil menyimpan kategori.',
-				'nama_kategori' => $detail_kategori->nama_kategori
+				'message' => 'Berhasil menyimpan kategori.'
 			]);
 		};		
 	}
@@ -122,7 +127,8 @@ class KategoriController extends Controller
 			// update kategori
 			Kategori::where('id', $request->id)->update([
 				'nama_kategori' => $request->nama_kategori,
-				'keterangan' => $request->keterangan
+				'slug' => Str::slug($request->nama_kategori, '-'),
+				'keterangan' => $request->keterangan,
 			]);
 
 			return response()->json([

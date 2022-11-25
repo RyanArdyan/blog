@@ -5,3 +5,8 @@
 .card {
 	transition: .3s;
 }
+
+.img-cover{
+	object-fit: cover;
+	object-position: center;
+}

@@ -8,16 +8,23 @@ use App\Http\Controllers\BerandaController;
 use App\Http\Controllers\KategoriController;
 use App\Http\Controllers\PostinganController;
 use App\Http\Controllers\PengaturanController;
+use App\Http\Controllers\ProfileController;
 
 // route harus menggunakan name agar jika url nya diubah maka kode nya tidak akan error karena aku menggunakan name
 
-// awal beranda
+// Route untuk admin dan users
+// beranda
 Route::get('/', function() {
 	return redirect()->route('beranda.index');
 });
 Route::get('/beranda', [BerandaController::class, 'index'])->name('beranda.index');
-Route::get('/beranda/{slug}', [BerandaController::class, 'detail'])->name('beranda.detail');
-// akhir beranda
+Route::get('/beranda/{slug_kategori}/{slug_postingan}', [BerandaController::class, 'detail'])->name('beranda.detail');
+Route::get('/beranda/{slug_kategori}', [BerandaController::class, 'kategori'])->name('beranda.kategori');
+
+// profil
+Route::get('/profile', [ProfileController::class, 'index'])->name('profile.index');
+Route::post('/profile', [ProfileController::class, 'update'])->name('profile.update');
+// Akhir route untuk admin dan users
 
 // jika user sudah login maka cegah user mengakses route login dan registrasi kecuali user logout manual
 Route::middleware(['auth'])->group(function() {
