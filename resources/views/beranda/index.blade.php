@@ -37,5 +37,12 @@
             </a>
          </div>
       @endforeach
+		{{ $semua_postingan->links() }}
    </div>
 @endsection
+
+@push('script')
+<script>
+	
+</script>
+@endpush

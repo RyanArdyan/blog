@@ -19,7 +19,7 @@ Route::get('/', function() {
 });
 Route::get('/beranda', [BerandaController::class, 'index'])->name('beranda.index');
 Route::get('/beranda/{slug_kategori}/{slug_postingan}', [BerandaController::class, 'detail'])->name('beranda.detail');
-Route::get('/beranda/{slug_kategori}', [BerandaController::class, 'kategori'])->name('beranda.kategori');
+Route::get('/beranda/{id_kategori}', [BerandaController::class, 'kategori'])->name('beranda.kategori');
 
 // profil
 Route::get('/profile', [ProfileController::class, 'index'])->name('profile.index');

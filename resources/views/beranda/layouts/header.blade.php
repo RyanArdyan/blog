@@ -25,7 +25,7 @@
                </a>
                <ul class="dropdown-menu">
 						@foreach($semua_kategori as $kategori)
-							<li><a class="dropdown-item" href="{{ route('beranda.kategori', ['slug_kategori' => $kategori->slug]) }}">{{ $kategori->nama_kategori }}</a></li>
+							<li><a class="dropdown-item" href="{{ route('beranda.kategori', ['id_kategori' => $kategori->id]) }}">{{ $kategori->nama_kategori }}</a></li>
 						@endforeach
                </ul>
             </li>
@@ -38,8 +38,9 @@
          @auth
             <a href="{{ route('logout') }}" class="btn btn-danger btn-sm">Logout</a>
          @endauth
-         <form>
-            <input type="text" class="form-control form-control-sm">
+         <form action='{{ route("beranda.index") }}' method="GET">
+				@csrf
+            <input type="text" name="judul" placeholder="Cari Berita" autocomplete="off" class="form-control form-control-sm">
          </form>
       </div>
    </div>
