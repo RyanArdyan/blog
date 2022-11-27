@@ -10,9 +10,11 @@
    {{-- font css --}}
    <link rel="stylesheet" href='{{ asset('formulir_profile_colorlib/fonts/icomoon/style.css') }}'>
 
-
    <!-- Bootstrap CSS -->
    <link rel="stylesheet" href='{{ asset('formulir_profile_colorlib/css/bootstrap.min.css') }}'>
+
+	{{-- Custom File Input dari pencarian Google --}}
+	<link rel="shortcut icon" href='{{ asset("CustomFileInputs/favicon.ico") }}'favicon.ico">
 
    <!-- Style -->
    <link rel="stylesheet" href="{{ asset('formulir_profile_colorlib/css/style.css') }}">
@@ -42,23 +44,24 @@
 
                   </div>
                   <div class="col-md-6">
-                     <form class="mb-5" id="form_profile">
+                     <form class="mb-5">
                         @csrf
                         <div class="row">
                            {{-- id --}}
                            <div class="col-md-12 form-group">
                               <input id="id" name="id" type="hidden" class="form-control"
-                                 placeholder="id kamu" autocomplete="off" value="{{ $detail_user_auth->id }}">
+                                 placeholder="id" autocomplete="off" value="{{ $detail_user_auth->id }}">
                            </div>
                            <div class="col-md-12 form-group">
                               <input id="nama" name="nama" type="text" class="form-control"
                                  placeholder="Nama kamu" autocomplete="off" value="{{ $detail_user_auth->nama }}">
                               <span id="nama_error" class="text_error text-danger"><small></small></span>
                            </div>
-                           {{-- <div class="col-md-12 form-group">
-										<img src="#" alt="Gambar">
-                              <input id="gambar" name="gambar" type="file" class="btn btn-sm btn-primary">
-                           </div> --}}
+                           <div class="col-md-12 form-group">
+										<img id="pratinjau_gambar" src='{{ asset("storage/photo_profile/$detail_user_auth->gambar") }}' width="100px" alt="Gambar" class="rounded mb-1">
+                              <input id="gambar" name="gambar" type="file" class="form-control">
+										<span id="gambar_error" class="text_error text-danger"></span>
+                           </div>
                         </div>
                         <div class="row">
                            <div class="col-12">
@@ -73,7 +76,6 @@
             </div>
          </div>
       </div>
-
    </div>
 
 
@@ -89,10 +91,23 @@
 
    {{-- script --}}
    <script>
-      $('#form_profile').on('submit', function(event) {
+		// pratinjau gambar
+		$("#gambar").on("change", function() {
+        let foto = this.files[0];
+        if (foto) {
+            let filePembaca = new FileReader();
+            filePembaca.onload = function(e) {
+                $("#pratinjau_gambar").attr("src", e.target.result);
+            };
+            filePembaca.readAsDataURL(foto);
+        };
+    });
+
+		// update
+      $('form').on('submit', function(event) {
          event.preventDefault();
          $.ajax({
-               url: '{{ route('profile.update') }}',
+               url: "{{ route('profile.update') }}",
                type: 'POST',
                data: new FormData(this),
                processData: false,

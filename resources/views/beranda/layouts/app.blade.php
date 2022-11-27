@@ -14,12 +14,15 @@
 
 	{{-- beranda_index css --}}
 	@stack('beranda_index')
+
+	{{-- beranda_detaiL.css --}}
+	@stack('beranda_detail')
 </head>
 
 <body>
    @include('beranda.layouts.header')
 
-   <main class="container">
+   <main class="container-fluid">
 		@yield('content')
    </main>
 

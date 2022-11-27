@@ -11,7 +11,8 @@ class BerandaController extends Controller
 {	
 	public function index(Request $request)
 	{
-		$semua_postingan = Postingan::where([
+		// jgn lupa gunakan relasi pemuatan bersemangat
+		$semua_postingan = Postingan::with(['kategori'])->where([
 			['judul', '!=', Null],
 			[function ($query) use ($request) {
 				// jika user mencari judul maka simpan judulnya ke dalam $judul
@@ -21,7 +22,9 @@ class BerandaController extends Controller
 			}]
 		])
 			->orderBy('updated_at', 'desc')
-			->paginate(10);
+			->paginate(6);
+
+			// $postingan_dan_kategori = Postingan::with(['kategori'])->orderBy('updated_at', 'desc')->get();
 
 
 		$semua_kategori = Kategori::select('id', 'nama_kategori', 'slug')->orderBy('nama_kategori', 'asc')->get();
@@ -47,7 +50,7 @@ class BerandaController extends Controller
 		$semua_kategori = Kategori::select('id', 'nama_kategori', 'slug')->orderBy('nama_kategori', 'asc')->get();
 		// paginasi tidak bisa menggunakan relasi
 		// ambil postingan yang sesuai kategori
-		$semua_postingan_yg_sesuai_kategori = Postingan::where('kategori_id', $kategori_id)->orderBy('updated_at', 'desc')->paginate(10);
+		$semua_postingan_yg_sesuai_kategori = Postingan::with(['user'])->where('kategori_id', $kategori_id)->orderBy('updated_at', 'desc')->paginate(10);
 		return view('beranda.kategori', [
 			'semua_kategori' => $semua_kategori,
 			'semua_postingan_yg_sesuai_kategori' => $semua_postingan_yg_sesuai_kategori

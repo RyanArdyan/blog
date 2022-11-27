@@ -1,4 +1,4 @@
-<nav class="navbar navbar-expand-md navbar-dark bg-success mb-4">
+<nav class="navbar navbar-expand-md navbar-dark bg-success mb-2">
    <div class="container-fluid">
       {{-- <button class="btn btn-warning">BLOG PONTI</button> --}}
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse"
@@ -7,16 +7,15 @@
       </button>
       <div class="collapse navbar-collapse" id="navbarCollapse">
          <ul class="navbar-nav me-auto mb-2 mb-md-0">
-            <li class="nav-item">
-               <a class="nav-link {{ Request()->is('profile*') ? 'active' : '' }}"
-                  href='{{ route('profile.index') }}'>Profile</a>
-            </li>
+				@auth
+					<li class="nav-item">
+						<a class="nav-link {{ Request()->is('profile*') ? 'active' : '' }}"
+							href='{{ route('profile.index') }}'>Profile</a>
+					</li>	
+				@endauth         
             <li class="nav-item">
                <a class="nav-link {{ Request()->is('beranda*') ? 'active' : '' }}"
                   href='{{ route('beranda.index') }}'>Beranda</a>
-            </li>
-            <li class="nav-item">
-               <a class="nav-link" href="#">Trending</a>
             </li>
             <li class="nav-item dropdown">
                <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"

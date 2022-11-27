@@ -20,14 +20,13 @@ Route::get('/', function() {
 Route::get('/beranda', [BerandaController::class, 'index'])->name('beranda.index');
 Route::get('/beranda/{slug_kategori}/{slug_postingan}', [BerandaController::class, 'detail'])->name('beranda.detail');
 Route::get('/beranda/{id_kategori}', [BerandaController::class, 'kategori'])->name('beranda.kategori');
-
-// profil
-Route::get('/profile', [ProfileController::class, 'index'])->name('profile.index');
-Route::post('/profile', [ProfileController::class, 'update'])->name('profile.update');
 // Akhir route untuk admin dan users
 
 // jika user sudah login maka cegah user mengakses route login dan registrasi kecuali user logout manual
 Route::middleware(['auth'])->group(function() {
+	// profil
+	Route::get('/profile', [ProfileController::class, 'index'])->name('profile.index');
+	Route::post('/profile', [ProfileController::class, 'update'])->name('profile.update');
 	// logout
 	Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
 });

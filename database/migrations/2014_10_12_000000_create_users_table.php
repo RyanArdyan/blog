@@ -18,6 +18,7 @@ return new class extends Migration
 				// fitur admin
 				// 1 berarti admin, 0 berarti user
 				$table->tinyInteger('level');
+            $table->string('gambar');
             $table->string('nama');
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();

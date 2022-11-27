@@ -86,6 +86,7 @@ class AuthController extends Controller
 		} else {
 			User::create([
 				'level' => 0,
+				'gambar' => 'pp_default.jpg',
 				'nama' => $request->nama,
 				'email' => $request->email,
 				'password' => Hash::make($request->password)

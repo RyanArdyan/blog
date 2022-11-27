@@ -1,0 +1,7 @@
+/* AGAR TEXT DALAM BENTUK VERTIKAL DI KARTU IKLAN  */
+.text_vertikal {
+	width: 1px;
+	word-wrap: break-word;
+	white-space:pre-wrap; 
+}
+/* AGAR TEXT DALAM BENTUK VERTIKAL DI KARTU IKLAN */
