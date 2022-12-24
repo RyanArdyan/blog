@@ -6,9 +6,4 @@
 				navigation">
       <span class="navbar-toggler-icon"></span>
    </button>
-   <div class="navbar-nav">
-      <div class="nav-item text-nowrap">
-         <a class="btn btn-sm btn-danger px-2" href="{{ route('logout') }}">Logout</a>
-      </div>
-   </div>
 </header>

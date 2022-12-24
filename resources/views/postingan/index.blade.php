@@ -199,7 +199,6 @@
 		$.ajax({
 			url: "{{ route('postingan.store') }}",
 			type: "POST",
-			// karena aku tidak mengirim new FormData(this) maka aku tidak boleh menggunakan processData, cache, contentType
 			data: form_data,
 			processData: false,
 			contentType: false,
@@ -344,7 +343,11 @@
 		if (foto) {
 			let filePembaca = new FileReader();
 			filePembaca.onload = function(e) {
-					$("#pratinjau_gambar").attr("src", e.target.result);
+					$("#pratinjau_gambar").attr({
+						'width': '150px',
+						'height:': '150px',
+						"src": e.target.result
+					});
 			};
 			filePembaca.readAsDataURL(foto);
 		};

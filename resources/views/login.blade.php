@@ -31,38 +31,47 @@
                            </div>
 
                            <form id="form_login">
-										@csrf
-										@method('POST')
+                              @csrf
+                              @method('POST')
                               <p>Ayo login menggunakan akunmu</p>
 
                               <div class="form-outline mb-2">
-											{{-- untuk menampilkan error validasi bootstrap perlu .is-invalid di input dan .invalid-feedback di div --}}
-                                 <input name="email" type="text" id="email" class="input email_input form-control"
-                                    placeholder="Email" autocomplete="off"/>
-											<div class="invalid-feedback email_error"></div>
+                                 {{-- untuk menampilkan error validasi bootstrap perlu .is-invalid di input dan .invalid-feedback di div --}}
+                                 <input name="email" type="text" id="email"
+                                    class="input email_input form-control" placeholder="Email" autocomplete="off" />
+                                 <div class="invalid-feedback email_error"></div>
                               </div>
 
                               <div class="form-outline mb-2">
-                                 <input name="password" type="password" id="password" class="input password_input form-control"
-                                    placeholder="Password" />
-											<div class="invalid-feedback password_error"></div>
-											<small id="lihat_password" class="text-primary jadikan_pointer">Lihat password</small>
+                                 <input name="password" type="password" id="password"
+                                    class="input password_input form-control" placeholder="Password" />
+                                 <div class="invalid-feedback password_error"></div>
+                                 <small id="lihat_password" class="text-primary jadikan_pointer">Lihat password</small>
                               </div>
 
-										<div class="form-check mb-4">
-											<input name="remember" class="form-check-input" type="checkbox">
-											<label for="remember" class="form-check-label">Ingat saya</label>
-										</div>
+                              <div class="form-check mb-4">
+                                 <input name="remember" class="form-check-input" type="checkbox">
+                                 <label for="remember" class="form-check-label">Ingat saya</label>
+                              </div>
 
-                              <div class="text-center pt-1 mb-5 pb-1">
+										<div class="text-center pt-1 mb-3 pb-1">
                                  <button class="btn btn-primary btn-block fa-lg gradient-custom-2 mb-3"
-                                    type="submit">Log in</button>
-                                 <a class="text-muted" href="#!">Lupa password?</a>
+                                    type="submit">Login</button>
                               </div>
 
-                              <div class="d-flex align-items-center justify-content-center pb-4">
+                              {{-- Login menggunakan google --}}
+                              <div id="gSignInWrapper">
+                                 <span class="label">Sign in with:</span>
+                                 <a href='{{ route("google.redirect") }}' id="customBtn" class="customGPlusSignIn">
+                                    <span class="buttonText">Google</span>
+                                 </a>
+                              </div>
+										{{-- akhir login menggunakan google  --}}
+
+                              <div class="d-flex align-items-center justify-content-center pb-4 mt-2">
                                  <p class="mb-0 me-2">Tidak memiliki akun?</p>
-                                 <a href="{{ route('halaman_registrasi') }}" class="btn btn-outline-danger">Registrasi sekarang</a>
+                                 <a href="{{ route('halaman_registrasi') }}" class="btn btn-outline-danger">Registrasi
+                                    sekarang</a>
                               </div>
 
                            </form>
@@ -75,7 +84,7 @@
                            <p class="small mb-0">Melalui aplikasi ini, anda akan melihat banyak blog populer diseluruh
                               dunia.</p>
 
-									<div id="error"></div>
+                           <div id="error"></div>
                         </div>
                      </div>
                   </div>
@@ -85,67 +94,68 @@
       </div>
    </section>
 
-	{{-- bootstrap dist js --}}
+   {{-- bootstrap dist js --}}
    <script src="{{ asset('bootstrap5_dist/js/bootstrap.bundle.min.js') }}"></script>
-	{{-- sweetalert2 CDN --}}
-	<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-	{{-- jquery --}}
-	<script src="{{ asset('jquery/jquery-3.6.1.min.js') }}"></script>
-	{{-- script buatanku --}}
-	<script>
-		// lihat password dan sembunyikan password
-		$("#lihat_password").on("click", function() {
-			if ($(this).text() === "Lihat password") {
-				$("#password").attr("type", "text");
-				$("#password").attr({
-					"autocomplete": "off"
-				});
-				$(this).text("Sembunyikan password");
-			} else if($(this).text() == "Sembunyikan password") {
-				$("#password").attr("type", "password");
-				$(this).text("Lihat password");
-			};
-		});
+   {{-- sweetalert2 CDN --}}
+   <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+   {{-- jquery --}}
+   <script src="{{ asset('jquery/jquery-3.6.1.min.js') }}"></script>
+   {{-- script buatanku --}}
+   <script>
+      // lihat password dan sembunyikan password
+      $("#lihat_password").on("click", function() {
+         if ($(this).text() === "Lihat password") {
+            $("#password").attr("type", "text");
+            $("#password").attr({
+               "autocomplete": "off"
+            });
+            $(this).text("Sembunyikan password");
+         } else if ($(this).text() == "Sembunyikan password") {
+            $("#password").attr("type", "password");
+            $(this).text("Lihat password");
+         };
+      });
 
-		// login
-		$("#form_login").on("submit", function(event) {
-			event.preventDefault();
-			$.ajax({
-				url: `{{ route('logika_login') }}`,
-				type: 'POST',
-				// data harus mengirimkan object
-				// new FormData(this) secara otomatis membuat object
-				data: new FormData(this),
-				processData: false,
-				contentType: false,
-				cache: false,
-				beforeSend: () => {
-					$(".input").removeClass("is-invalid")
-				}
-			})
-				.done((response) => {
-					// jika validasi biasa error
-					if (response.message === 'Validasi Biasa Errors') {
-						// pengulangan untuk object
-						$.each(response.errors, function(key, value) {
-							$(`.${key}_input`).addClass("is-invalid");
-							$(`.${key}_error`).text(value);
-						});
-					// jika email dan password yang di input tidak ada di database
-					} else if(response.message === 'Email Atau Password Salah') {
-						// Jika email atau password salah maka tampilkan sweetalert
-						Swal.fire('Email Atau Password Salah.');
-					// Jika user berhasil login
-					} else {
-						Swal.fire('Selamat Datang');
-						level = response.level;
-						nama = response.nama;
-						setTimeout(() => {
-							location.href = `beranda`;
-						}, 1000);
-					}
-				});
-		});
-	</script>
+      // login
+      $("#form_login").on("submit", function(event) {
+         event.preventDefault();
+         $.ajax({
+               url: `{{ route('logika_login') }}`,
+               type: 'POST',
+               // data harus mengirimkan object
+               // new FormData(this) secara otomatis membuat object
+               data: new FormData(this),
+               processData: false,
+               contentType: false,
+               cache: false,
+               beforeSend: () => {
+                  $(".input").removeClass("is-invalid")
+               }
+            })
+            .done((response) => {
+               // jika validasi biasa error
+               if (response.message === 'Validasi Biasa Errors') {
+                  // pengulangan untuk object
+                  $.each(response.errors, function(key, value) {
+                     $(`.${key}_input`).addClass("is-invalid");
+                     $(`.${key}_error`).text(value);
+                  });
+                  // jika email dan password yang di input tidak ada di database
+               } else if (response.message === 'Email Atau Password Salah') {
+                  // Jika email atau password salah maka tampilkan sweetalert
+                  Swal.fire('Email Atau Password Salah.');
+                  // Jika user berhasil login
+               } else {
+                  Swal.fire('Selamat Datang');
+                  level = response.level;
+                  nama = response.nama;
+                  setTimeout(() => {
+                     location.href = `beranda`;
+                  }, 1000);
+               }
+            });
+      });
+   </script>
 </body>
+
 </html>

@@ -14,7 +14,7 @@
 					</li>	
 				@endauth         
             <li class="nav-item">
-               <a class="nav-link {{ Request()->is('beranda*') ? 'active' : '' }}"
+               <a class="nav-link {{ Request()->is('beranda') ? 'active' : '' }}"
                   href='{{ route('beranda.index') }}'>Beranda</a>
             </li>
             <li class="nav-item dropdown">

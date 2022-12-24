@@ -123,11 +123,14 @@
                      $(`#${key}_error`).text(value);
                   });
                } else if (response.status === 200) {
-                  Swal.fire(
+						Swal.fire(
 							'Kerja bagus!',
 							'Berhasil menyimpan perubahan!',
 							'success'
 						);
+						setTimeout(() => {
+							window.location.href = '{{ route("beranda.index") }}';
+						}, 3000);
                };
             });
       });

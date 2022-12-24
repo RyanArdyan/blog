@@ -38,7 +38,7 @@
 					{{-- input type file tidak bisa menggunakan .is-invalid --}}
 					<label for="gambar" class="form-label">Gambar</label>
 					<br>
-					<img id="pratinjau_gambar" src="#" alt="Gambar Postingan" width="150px" height="150px" class="mb-3 rounded">
+					<img id="pratinjau_gambar" src="#" alt="Gambar Postingan" class="mb-3 rounded">
 					<input id="gambar" name="gambar" class="input gambar form-control" type="file">
 					<span class="error_gambar pesan_error text-danger"></span>
 				</form>

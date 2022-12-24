@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Laravel\Socialite\Facades\Socialite;
 use App\Models\User;
 
 class AuthController extends Controller
@@ -96,6 +97,33 @@ class AuthController extends Controller
 				'status' => 200,
 				'message' => 'Berhasil Registrasi, Silahkan Login'
 			]);
+		}
+	}
+
+	public function redirect()
+	{
+		return Socialite::driver('google')->redirect();
+	}
+
+	public function callback()
+	{
+		$data_pengguna_google_yg_login = Socialite::driver('google')->user();
+
+		if ($pengguna = User::where('email', $data_pengguna_google_yg_login->getEmail())->first()) {
+
+			Auth::login($pengguna);
+			return redirect()->route('beranda.index');
+		} else {
+			$pengguna = User::create([
+				'level' => 0,
+				'gambar' => 'pp_default.jpg',
+				'nama' => $data_pengguna_google_yg_login->getName(),
+				'email' => $data_pengguna_google_yg_login->getEmail(),
+				'password' => Hash::make('pontianak1104')
+			]);
+
+			Auth::login($pengguna);
+			return redirect()->route('beranda.index');
 		}
 	}
 

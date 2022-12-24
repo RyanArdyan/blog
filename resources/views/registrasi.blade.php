@@ -54,6 +54,15 @@
 											<small id="lihat_password" class="text-primary jadikan_pointer">Lihat password</small>
                               </div>
 
+										{{-- registrasi menggunakan google --}}
+                              <div id="gSignInWrapper mb-3">
+                                 <span class="label">Registrasi dengan:</span>
+                                 <a href="{{ route('google.redirect') }}" id="customBtn" class="customGPlusSignIn">
+                                    <span class="buttonText">Google</span>
+                                 </a>
+                              </div>
+										{{-- akhir registrasi menggunakan google  --}}
+
                               <div class="text-center pt-1 mb-5 pb-1">
                                  <button class="btn btn-primary btn-block fa-lg gradient-custom-2 mb-3"
                                     type="submit">Registrasi</button>

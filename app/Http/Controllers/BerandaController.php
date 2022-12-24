@@ -35,13 +35,19 @@ class BerandaController extends Controller
 		]);
 	}
 
+	// jangan hapus $slug_kategori
 	public function detail($slug_kategori, $slug_postingan)
 	{
 		$semua_kategori = Kategori::select('id', 'nama_kategori', 'slug')->orderBy('nama_kategori', 'asc')->get();
 		$detail_postingan = Postingan::where('slug', $slug_postingan)->first();
+		// ambil semua komentar yg column parent_id nya berisi null, itu artinya aku hanya mengambil komentar-komentar parent
+		$postingan_comments = $detail_postingan->komentar->whereNull('parent_id');
+		// $postingan_comments = $tes->all();
+		// kirim semua kategori, detail postingan dan semua komentar disuatu postingan  pada postingan
 		return view('beranda.detail', [
 			'semua_kategori' => $semua_kategori,
-			'detail_postingan' => $detail_postingan
+			'detail_postingan' => $detail_postingan,
+			'postingan_comments' => $postingan_comments,
 		]);
 	}
 

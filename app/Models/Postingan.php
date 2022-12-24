@@ -21,8 +21,15 @@ class Postingan extends Model
 		return $this->belongsTo(Kategori::class, 'kategori_id');
 	}
 
+	// 1 postingan ditulis oleh 1 penulis
 	public function user()
 	{
 		return $this->belongsTo(User::class, 'user_id');
+	}
+
+	// 1 postingan punya banyak komentar bersarang
+	public function komentar()
+	{
+		return $this->morphMany(Komentar::class, 'komentarable')->orderBy('updated_at', 'desc');
 	}
 }

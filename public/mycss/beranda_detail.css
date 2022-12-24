@@ -1,7 +1,16 @@
-/* AGAR TEXT DALAM BENTUK VERTIKAL DI KARTU IKLAN  */
-.text_vertikal {
-	width: 1px;
-	word-wrap: break-word;
-	white-space:pre-wrap; 
+/*  */
+.display-comment .semua_balasan {
+	margin-left: 40px
 }
-/* AGAR TEXT DALAM BENTUK VERTIKAL DI KARTU IKLAN */
+
+.display-comment .semua_balasan .semua_balasan {
+	margin-left: 0px
+}
+
+.pointer_cursor {
+	cursor: pointer;
+}
+
+.isi {
+	margin-bottom: 2px;
+}

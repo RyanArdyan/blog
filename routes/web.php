@@ -9,17 +9,23 @@ use App\Http\Controllers\KategoriController;
 use App\Http\Controllers\PostinganController;
 use App\Http\Controllers\PengaturanController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\KomentarController;
 
 // route harus menggunakan name agar jika url nya diubah maka kode nya tidak akan error karena aku menggunakan name
 
 // Route untuk admin dan users
-// beranda
+// url awal
 Route::get('/', function() {
 	return redirect()->route('beranda.index');
 });
+// beranda
 Route::get('/beranda', [BerandaController::class, 'index'])->name('beranda.index');
 Route::get('/beranda/{slug_kategori}/{slug_postingan}', [BerandaController::class, 'detail'])->name('beranda.detail');
 Route::get('/beranda/{id_kategori}', [BerandaController::class, 'kategori'])->name('beranda.kategori');
+// komentar
+Route::get('/komentar', [KomentarController::class, 'data'])->name('komentar.data');
+Route::post('/komentar', [KomentarController::class, 'store'])->name('komentar.store');
+Route::post('/komentar/balas', [KomentarController::class, 'balas'])->name('komentar.balas');
 // Akhir route untuk admin dan users
 
 // jika user sudah login maka cegah user mengakses route login dan registrasi kecuali user logout manual
@@ -76,5 +82,9 @@ Route::middleware(['guest'])->group(function() {
 	// registrasi
 	Route::get('/halaman-registrasi', [AuthController::class, 'tampilan_registrasi'])->name('halaman_registrasi');
 	Route::post('/logika-registrasi', [AuthController::class, 'logika_registrasi'])->name('logika_registrasi');
+
+	// auth google
+	Route::get('/google/redirect', [AuthController::class, 'redirect'])->name('google.redirect');
+	Route::get('/google/callback', [AuthController::class, 'callback'])->name('google.callback');
 });
 

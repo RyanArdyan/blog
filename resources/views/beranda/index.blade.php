@@ -2,7 +2,7 @@
 
 @section('title', 'Beranda')
 
-@push('beranda_index')
+@push('css')
    <link rel="stylesheet" href='{{ asset('mycss/beranda_index.css') }}'>
 @endpush
 
@@ -19,17 +19,8 @@
          @endauth
       </div>
 
-		<div class="col-lg-1">
-			<div class="card">
-				<div class="card-body" style="height: 50rem">
-				  <h3 class="text_vertikal">
-						<span class="tab-space">INI</span>
-						<span class="tab-space">ADALAH</span>
-						<span class="tab-space">IKLAN</span>
-					</h3>
-				</div>
-			</div>
-		</div>
+		<div class="col-lg-1"></div>
+
 		<div class="col-lg-10">
 			<div class="row">
 				@forelse ($semua_postingan as $postingan)
@@ -54,17 +45,8 @@
 				@endforelse
 			</div>
 		</div>
-		<div class="col-lg-1">
-			<div class="card">
-				<div class="card-body" style="height: 50rem">
-				  <h3 class="text_vertikal">
-						<span class="tab-space">INI</span>
-						<span class="tab-space">ADALAH</span>
-						<span class="tab-space">IKLAN</span>
-					</h3>
-				</div>
-			</div>
-		</div>
+		<div class="col-lg-1"></div>
+
 		
 		{{ $semua_postingan->links() }}
    </div>

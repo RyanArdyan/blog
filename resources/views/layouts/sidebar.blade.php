@@ -32,5 +32,11 @@
                Pengaturan
             </a>
          </li>
+			<li class="nav-item">
+            <a class="nav-link" href="{{ route('logout') }}">
+               <span data-feather="log-out" class="align-text-bottom"></span>
+               Logout
+            </a>
+         </li>
    </div>
 </nav>
