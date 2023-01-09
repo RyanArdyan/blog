@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\Postingan;
 use App\Models\Kategori;
+use App\Models\Komentar;
 
 class BerandaController extends Controller
 {	
@@ -41,7 +42,9 @@ class BerandaController extends Controller
 		$semua_kategori = Kategori::select('id', 'nama_kategori', 'slug')->orderBy('nama_kategori', 'asc')->get();
 		$detail_postingan = Postingan::where('slug', $slug_postingan)->first();
 		// ambil semua komentar yg column parent_id nya berisi null, itu artinya aku hanya mengambil komentar-komentar parent
+		// $postingan_comments = Komentar::whereNull('parent_id')->get();
 		$postingan_comments = $detail_postingan->komentar->whereNull('parent_id');
+
 		// $postingan_comments = $tes->all();
 		// kirim semua kategori, detail postingan dan semua komentar disuatu postingan  pada postingan
 		return view('beranda.detail', [

@@ -50,6 +50,7 @@ class KomentarController extends Controller
 		$detail_postingan = Postingan::find($request->postingan_id);
 		// 1 postingan boleh punya banyak komentar
 		// panggil method komentar di dalam model postingan, simpan komentar baru
+        // column komentarable_id dan komentarable_type diurus oleh code dibawah
 		$detail_postingan->komentar()->save($komentar);
 
 		return response()->json([

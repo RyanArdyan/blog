@@ -22,8 +22,8 @@ return new class extends Migration
 			// berisi App\Models\Posting
 			$table->string('komentarable_type');
 			// untuk menjalankan fitur balas
-			// nullable karena value dari column parent_id akan berisi null jika dia merupakan sebuah komentar balasan
-			// jika dia merupakan komentar balasan maka valuenya akan berisi column id milik table komentar yg sesuai
+			// nullable karena value dari column parent_id akan berisi null jika dia merupakan parent comment
+			// jika dia merupakan komentar balasan maka valuenya akan berisi column id milik parent comment yg dia balas atau table komentar yg sesuai
 			$table->unsignedInteger('parent_id')->nullable();
 			$table->text('isi');
 			$table->timestamps();

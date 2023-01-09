@@ -38,6 +38,7 @@
 						
 					</div>
                <hr />
+               <div id="iseng"></div>
                <h4>Tambah Komentar</h4>
                <form id="form_komentar">
                   @csrf
@@ -72,7 +73,6 @@
 		$(`.form_balas_${komentar_id}`).removeAttr('hidden');
 	};
 
-
 	// tampilkan semua komentar 
 	function data_komentar() {
 		// semua parent commment disuatu postingan dan formulir untuk menulis komentar
@@ -96,13 +96,31 @@
                     
                 </div>
 
-                @include('beranda.balas', [
-                    'komentar_semuabalasan' => $komentar->balas, 
-                    'detail_postingan' => $detail_postingan,
-                    'komentar_id' => $komentar->id
-                ])
+                @foreach($komentar->balas as $komentar_balasan)
+                {{-- turunan comment --}}
+                <div class="semua_balasan mt-4">
+                    {{-- nama user yang berkomentar --}}
+                    {{-- value column nama milik table user yang berelasi dengan table komentar --}}
+                    <strong>{{ $komentar_balasan->user->nama }}</strong>
+                    <p class="isi_{{ $komentar_balasan->id }}">{{ $komentar_balasan->isi }}</p>
+                        <strong data-id="{{ $komentar_balasan->id }}" class="balas_{{ $komentar_balasan->id }} pointer_cursor text-primary" onclick='balas("{{ $komentar_balasan->id }}")' >Balas coy</strong>
+                        <div id="form_balas"></div>
+                    <form class="form_balas_{{ $komentar_balasan->id }}" hidden>
+                        @csrf
+                        <div class="form-group">
+                            <input placeholder="Tulis Komentar" type="text" name="komentar_isi" class="komentar_isi_{{ $komentar_balasan->id }} isi_komentar_{{ $komentar_balasan->id }} form-control" autocomplete="off" id="isi_komentar_{{ $komentar_balasan->id }}">
+                            <input type="hidden" name="postingan_id" id="postingan_id_{{ $detail_postingan->id }}" value="{{ $detail_postingan->id }}">
+                            <input type="hidden" name="komentar_id" id="komentar_id_{{ $komentar_balasan->id }}" value="{{ $komentar_balasan->id }}">
+                            {{-- aku butuh ini agar chid bisa dimasukkan ke dalam wadahnya --}}
+                            <input type="hidden" name="parent_id" id="parent_id_{{ $komentar_balasan->id }}" value="{{ $komentar->id }}">
+                        </div>
+                        <button type="button" class="btn btn-sm btn-warning" id="grandchild_balas" data-id="{{ $komentar_balasan->id }}" data-parentId="{{ $komentar->id }}">{{ $komentar->id }}</button>
+                    </form>
+                </div>
+                @endforeach
 			</div>
-		@endforeach`;
+		@endforeach`
+
 		$('#komentar_dan_balas').html(include);
 	};
 	// panggil fungsi data komentar
@@ -208,18 +226,16 @@
 	let simpan_komentar_balasan = function(komentar_user_nama = 'budi', komentar_isi = 'isi', komentar_id = 1) {
 		komentar_balasan = `<div class="semua_balasan mt-4">
 			<strong>${komentar_user_nama}</strong>
-			<p class="isi_${komentar_id}">${komentar_isi}</p>
+			<p class="isi">${komentar_isi}</p>
 			<strong data-id="${komentar_id}" class="balas_${komentar_id} pointer_cursor text-primary" onclick='balas(${komentar_id})'>Balas</strong>		
 		</div>
 		
-		<form class="form_balas_${komentar_id}" hidden>
+		<form class="form_balas_${komentar_id}" method="POST" action="{{ route('komentar.balas') }}" hidden>
 			@csrf
 			<div class="form-group">
-				<input placeholder="Tulis Komentar" type="text" name="komentar_isi" class="komentar_isi_${komentar_id} cegah_enter_pada_input_isi isi_komentar_${komentar_id} form-control" autocomplete="off" id="isi_komentar_${ komentar_id }">
-				<input type="hidden" name="postingan_id" value="{{ $detail_postingan->id }}" id="postingan_id_${komentar_id}">
-				<input type="hidden" name="komentar_id" id="komentar_id_${ komentar_id }" value="${komentar_id}">
-                <input type="hidden" name="parent_id" id="parent_id_${komentar_id}"
-               value="${komentar_id}">
+				<input type="text" name="komentar_isi" class="komentar_isi isi_komentar form-control">
+				<input type="hidden" name="postingan_id" value="{{ $detail_postingan->id }}">
+				<input type="hidden" name="komentar_id" value="${komentar_id}">
 			</div>
 			<button type="submit" class="btn btn-sm btn-warning">Selesai</button>
 		</form>
@@ -246,6 +262,7 @@
 		</form>
 		`;
 		$(`.child_comment_baru_${parent_id}`).append($(komentar_balasan_gc));
+        $('#iseng').text(`.child_comment_baru_${parent_id}`);
 		$(`.form_balas_${komentar_id}`)[0].reset();
 	};
 
