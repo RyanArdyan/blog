@@ -138,7 +138,6 @@ class PostinganController extends Controller
 			// jika user memiliki gambar
 			if ($request->hasFile('gambar')) {
 				// hapus gambar lama
-				Storage::delete('public/gambar_postingan/' . $detail_postingan->gambar);
 				// nama gambar baru
 				$nama_gambar_baru = $detail_postingan->id . '_' . time()  . '.' . $request->file('gambar')->extension();
 				// upload gambar

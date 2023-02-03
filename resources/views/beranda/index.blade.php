@@ -25,7 +25,8 @@
 			<div class="row">
 				@forelse ($semua_postingan as $postingan)
 					<div class="col-lg-4 mb-4">
-						<a href="{{ route('beranda.detail', ['slug_kategori' => $postingan->kategori->slug, 'slug_postingan' => $postingan->slug]) }}" class="text-decoration-none text-dark">
+						<a href="{{ route('beranda.detail', [
+                            'slug_kategori' => $postingan->kategori->slug, 'slug_postingan' => $postingan->slug]) }}" class="text-decoration-none text-dark">
 							<div class="kartu card h-100">
 								<img src='{{ asset("storage/gambar_postingan/$postingan->gambar") }}' width="100%" height="200"
 									alt="Gambar Postingan" class="card-img-top">

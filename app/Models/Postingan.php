@@ -28,8 +28,9 @@ class Postingan extends Model
 	}
 
 	// 1 postingan punya banyak komentar bersarang
-	public function komentar()
-	{
-		return $this->morphMany(Komentar::class, 'komentarable')->orderBy('updated_at', 'desc');
-	}
+    public function comments()
+    {
+        // jadi 'comentarable' akan mengurus value table postingan columnd id dan menulis App\Models\postingan di column komentarable_id dan komentarable_type
+        return $this->morphMany(Comment::class, 'commentable')->latest();
+    }
 }
